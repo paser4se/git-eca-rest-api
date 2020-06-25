@@ -41,7 +41,7 @@ end
 ## Get the project ID from env var, extracting from pattern 'project-###'
 project_id = ENV['GL_REPOSITORY'][8..-1]
 ## Get data about project from API
-project_response = HTTParty.get("https://localhost/api/v4/projects/#{project_id}")
+project_response = HTTParty.get("https://gitlab.eclipse.org/api/v4/projects/#{project_id}")
 ## Format data to be able to easily read and process it
 project_json_data = MultiJson.load(project_response.body)
 ## Get the web URL
