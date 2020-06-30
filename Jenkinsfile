@@ -1,65 +1,7 @@
   @Library('common-shared') _
 
   pipeline {
-    agent {
-      kubernetes {
-        label 'buildpack-agent'
-        yaml '''
-        apiVersion: v1
-        kind: Pod
-        spec:
-          containers:
-          - name: buildpack
-            image: buildpack-deps:stable
-            command:
-            - cat
-            tty: true
-            resources:
-              limits:
-                memory: "2Gi"
-                cpu: "1"
-              requests:
-                memory: "2Gi"
-                cpu: "1"
-            volumeMounts:
-            - name: tmp
-              mountPath: /tmp
-          - name: jnlp
-            resources:
-              limits:
-                memory: "2Gi"
-                cpu: "1"
-              requests:
-                memory: "2Gi"
-                cpu: "1"
-            volumeMounts:
-            - name: mvnw
-              mountPath: /home/jenkins/.m2/wrapper
-              readOnly: false
-            - name: m2-repo
-              mountPath: /home/jenkins/.m2/repository
-            - name: settings-xml
-              mountPath: /home/jenkins/.m2/settings.xml
-              subPath: settings.xml
-              readOnly: true
-            - name: tmp
-              mountPath: /tmp
-          volumes:
-          - name: mvnw
-            emptyDir: {}
-          - name: m2-repo
-            emptyDir: {}
-          - name: tmp
-            emptyDir: {}
-          - name: settings-xml
-            secret:
-              secretName: m2-secret-dir
-              items:
-              - key: settings.xml
-                path: settings.xml
-        '''
-      }
-    }
+    agent any
 
     environment {
       APP_NAME = 'git-eca-rest-api'
